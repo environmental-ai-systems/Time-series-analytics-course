@@ -180,9 +180,11 @@ This stops and removes the container, but your files stay safely on your machine
 
 ### 2(d). Using the University JupyterHub (GIS practical) <a name="Hub"></a>
 
-If you are running the course on the university JupyterHub, **Practicals 1–3 work on the default kernel with no setup**. The GIS notebook (**Practical 4**) is the exception: the Hub ships a very recent, fixed version of Python that does not play nicely with GeoPandas. The Hub also does not let us share a pre-built environment, so each student builds a small dedicated environment once and registers it as its own **Jupyter kernel**.
+If you are running the course on the university JupyterHub, **Practicals 1–3 work on the default kernel with no setup** (each one's first code cell installs any missing packages automatically). The GIS notebook (**Practical 4**) is the exception: the Hub ships a very recent, fixed version of Python that does not play nicely with GeoPandas. The Hub also does not let us share a pre-built environment, so each student builds a small dedicated environment once and registers it as its own **Jupyter kernel**.
 
 > A *kernel* is just the Python engine behind a notebook. Here we create a separate engine (on Python 3.11, with the geospatial packages) and tell the GIS notebook to use it instead of the Hub default.
+
+> ⚠️ **Don't try to shortcut this with `pip install` on the default kernel.** Adding `rasterio`/`pyproj`/`contextily` on top of the Hub's existing conda GeoPandas leaves you with two competing PROJ installations, and any map that reprojects fails with an error like `PROJ: ... DATABASE.LAYOUT ... minor = 2 whereas a number >= 3 is expected ... it comes from another PROJ installation`. The dedicated kernel below avoids this by installing the whole geospatial stack from one source (conda-forge) so the PROJ library and its database match.
 
 **Run these once, from a Hub terminal** (open a terminal from the JupyterHub launcher screen, and press Enter after each command):
 
