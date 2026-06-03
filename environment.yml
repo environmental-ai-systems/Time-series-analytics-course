@@ -1,16 +1,18 @@
 name: timeseries
 channels:
-  - defaults
-  - https://repo.anaconda.com/pkgs/main
-  - https://repo.anaconda.com/pkgs/r
-  - https://repo.anaconda.com/pkgs/msys2
+  - conda-forge
+  - nodefaults
 dependencies:
-  - conda-forge::geopandas
+  - geopandas
   - contextily
+  - rasterio
   - jupyter
-  - conda-forge::rioxarray
-  - conda-forge::xgboost
+  - jupyterlab
+  - rioxarray
+  - xgboost
+  - scikit-learn
   - seaborn
-  - anaconda::statsmodels
+  - statsmodels
   - pip:
     - flaml[automl]
+    - shap

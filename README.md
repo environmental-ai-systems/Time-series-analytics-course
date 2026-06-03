@@ -12,6 +12,7 @@
      * 2a. [Using your own machine](#own)
      * 2b. [Using Google Colab](#Colab)
      * 2c. [Using Docker](#Docker)
+     * 2d. [Using the University JupyterHub (GIS practical)](#Hub)
 4. [Folder structure and running the examples](#Folder-Structure)
 5. [Expectations and pace of learning](#Expectations)
 6. [Code of Conduct](#Code-of-Conduct)
@@ -97,12 +98,26 @@ Can you see the project folders and files? You are good to go! Every time you no
 
 ### 2(b). Using Google Colab<a name="Colab"></a>
 
-Google's Colab [Co-laboratory](https://colab.research.google.com) is a great platform for developing machine learning and data-science driven applications on the web. It provides access to free GPU resource (Graphics Processing Units). However it also allows us to run Jupyter notebooks from a Github repository *if you have a Google account*. If you can register or have an existing Google account, using Google Colab is a really nice experience. It will allow you to save individual files and projects to your Google Drive. We dont cover that here. By clicking on the above link it will take you to a page that presents you with options to load existing files from either your Google Drive or from public repositories. However we also provide you with a notebook that will setup all of the files on your Google drive. This can be run by clicking on the link below. This clones the current respository to your drive and sets up the pre-trained XGBoost model files so you can call them as you would running on your local machine:
+Google's Colab [Co-laboratory](https://colab.research.google.com) is a great platform for developing machine learning and data-science driven applications on the web. It provides access to free GPU resource (Graphics Processing Units) and lets you run Jupyter notebooks straight from a GitHub repository *if you have a Google account*. Nothing is installed on your own machine, and you can save your work back to your Google Drive for continual development.
 
-#### Setting up on Google Colab
+You do **not** need to install the `environment.yml` packages yourself on Colab. Most libraries are already available, and the first code cell of each notebook automatically detects that it is running on Colab and installs the few extras that are not (for example `shap` in Practical 3, and `contextily` and `rasterio` in Practical 4). On JupyterHub or your own machine that same cell does nothing.
+
+**Step 1 — Run the setup notebook once.** Click the badge below. It mounts your Google Drive and clones this repository into `My Drive/Colab Notebooks/MPEC_bootcamp/Time-series-analytics-course`, including the pre-trained XGBoost model files so you can load them exactly as you would locally.
+
 - [![Open notebook In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/m-edal/Time-series-analytics-course/blob/main/Setup_GoogleColab.ipynb)
 
-Once you have run this file, you can then access your notebook files from your Google drive, modify them and save them for continual development. We will cover this in class.
+> ⚠️ **Only run the setup notebook once.** Re-running it deletes and re-clones that folder, which will overwrite any changes you have saved to those notebooks. After the first time, open the practicals directly using the badges below instead.
+
+**Step 2 — Open a practical.** Once setup has finished you can launch any notebook directly in Colab using the badges below. When you save (`File → Save a copy in Drive`, or `Ctrl+S` on a copy opened from Drive) your work persists in the folder created above.
+
+| Notebook | Open in Colab |
+|---|---|
+| Practical 1 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/m-edal/Time-series-analytics-course/blob/main/Practical_1.ipynb) |
+| Practical 2 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/m-edal/Time-series-analytics-course/blob/main/Practical_2.ipynb) |
+| Practical 3 | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/m-edal/Time-series-analytics-course/blob/main/Practical_3.ipynb) |
+| Practical 4 (GIS) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/m-edal/Time-series-analytics-course/blob/main/Practical_4.ipynb) |
+
+When a notebook opens, run the first code cell first — it handles the Drive mount, moves into the project folder so the `data/` files resolve, and installs any missing packages. We will also cover this in class.
 
 ### 2(c). Using Docker <a name="Docker"></a>
 
@@ -119,7 +134,7 @@ You can use Docker to interact with the course material. This requires the follo
 c.1) **Clone this repository** to your local machine. If you are using a terminal to do this, open a terminal and write:
 
    ```bash
-   git https://github.com/m-edal/Time-series-analytics-course.git
+   git clone https://github.com/m-edal/Time-series-analytics-course.git
    cd Time-series-analytics-course
    ```
    Alternatively you can use the [Github desktop  GUI]() installed on your machine.
@@ -162,6 +177,42 @@ in the same terminal.
   docker-compose down
   ```
 This stops and removes the container, but your files stay safely on your machine.
+
+### 2(d). Using the University JupyterHub (GIS practical) <a name="Hub"></a>
+
+If you are running the course on the university JupyterHub, **Practicals 1–3 work on the default kernel with no setup**. The GIS notebook (**Practical 4**) is the exception: the Hub ships a very recent, fixed version of Python that does not play nicely with GeoPandas. The Hub also does not let us share a pre-built environment, so each student builds a small dedicated environment once and registers it as its own **Jupyter kernel**.
+
+> A *kernel* is just the Python engine behind a notebook. Here we create a separate engine (on Python 3.11, with the geospatial packages) and tell the GIS notebook to use it instead of the Hub default.
+
+**Run these once, from a Hub terminal** (open a terminal from the JupyterHub launcher screen, and press Enter after each command):
+
+1. Make `conda activate` available in this terminal:
+   ```bash
+   source /opt/conda/etc/profile.d/conda.sh
+   ```
+2. Create a clean environment on a stable Python:
+   ```bash
+   conda create -y -n gis-practical -c conda-forge --override-channels python=3.11
+   ```
+3. Activate it:
+   ```bash
+   conda activate gis-practical
+   ```
+4. Install the geospatial stack into that environment:
+   ```bash
+   conda install -y -c conda-forge --override-channels geopandas contextily rasterio pyproj proj proj-data shapely fiona pyogrio matplotlib ipykernel
+   ```
+5. Register it as a Jupyter kernel:
+   ```bash
+   python -m ipykernel install --user --name gis-practical --display-name "GIS Practical (py311)"
+   ```
+6. Check it is there:
+   ```bash
+   jupyter kernelspec list
+   ```
+   You should see `gis-practical` in the list.
+
+**Then open Practical 4 as usual.** At the top-right of the notebook, click the kernel name and choose **"GIS Practical (py311)"** from the dropdown. You can now run every cell in the GIS notebook. You only need to build the kernel once — after that, just select it whenever you open Practical 4.
 
 
 ## 4) Repository structure and using Jupyter notebooks <a name="Folder-Structure"></a>
