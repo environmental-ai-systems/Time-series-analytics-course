@@ -66,8 +66,8 @@ You now have a local copy of the project on your machine.
 If you prefer the terminal, you can run:
 
 ```bash
-git clone https://github.com/yourusername/your-repo.git
-cd your-repo
+git clone https://github.com/m-edal/Time-series-analytics-course.git
+cd Time-series-analytics-course
 ```
 
 Now we are going to create a virtual environment to run our notebooks in. Virtal environments are a great way of maintaining a 'work space' that is seperate to your default installation. For example, if you are going to start installing lots of bespoke modules, you may sometimes come across a clash of version numbers which then becomes tricky to maintain. In the worst case scenario, this would require a re-installation of Python. So lets create a virtual environment for our project. You can switch-on and switch-off these virtual environments from the command line/terminal whenever you need them.
@@ -139,17 +139,19 @@ c.1) **Clone this repository** to your local machine. If you are using a termina
    ```
    Alternatively you can use the [Github desktop  GUI]() installed on your machine.
 
+> **A note on the command.** Recent versions of Docker use `docker compose` (with a space). The older `docker-compose` (with a hyphen) still works on Docker Desktop, so use whichever your installation accepts.
+
 c.2 ) **Build the Docker image**. Navigate to where you cloned this repository and open a terminal. Enter the following:
 
    ```bash
-   docker-compose build
+   docker compose build
    ```
-   You will see various things progressing on the screen. Wait until this finished. 
+   You will see various things progressing on the screen. The first build downloads and solves the whole conda environment, so it can take several minutes — wait until it has finished.
    
 c.3) **Start the Jupyter Lab server**. In the same terminal, you are now going to start the Docker server by typing the following command:
 
    ```bash
-   docker-compose up
+   docker compose up
    ```
 
 c.4) Now **Open your web browser and go to**:
@@ -164,17 +166,17 @@ All notebooks and files you create or edit in Jupyter are saved to your local pr
 
 #### How to Shut It Down
 To stop the server:
- - If running in the foreground (you used **docker-compose up**), press:
+ - If running in the foreground (you used **docker compose up**), press:
 
  ```mathematica
  Ctrl + C
  ```
 in the same terminal.
 
- - If running in the background (you used **docker-compose up -d**), run:
+ - If running in the background (you used **docker compose up -d**), run:
 
   ```bash
-  docker-compose down
+  docker compose down
   ```
 This stops and removes the container, but your files stay safely on your machine.
 
