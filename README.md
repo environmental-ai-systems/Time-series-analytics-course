@@ -180,6 +180,8 @@ This stops and removes the container, but your files stay safely on your machine
 
 ### 2(d). Using the University JupyterHub (GIS practical) <a name="Hub"></a>
 
+**University of Manchester students** can access the JupyterHub at [https://jupyter.its.manchester.ac.uk/](https://jupyter.its.manchester.ac.uk/) and log in with their usual University username and password — no installation required.
+
 If you are running the course on the university JupyterHub, **Practicals 1–3 work on the default kernel with no setup** (each one's first code cell installs any missing packages automatically). The GIS notebook (**Practical 4**) is the exception: the Hub ships a very recent, fixed version of Python that does not play nicely with GeoPandas. The Hub also does not let us share a pre-built environment, so each student builds a small dedicated environment once and registers it as its own **Jupyter kernel**.
 
 > A *kernel* is just the Python engine behind a notebook. Here we create a separate engine (on Python 3.11, with the geospatial packages) and tell the GIS notebook to use it instead of the Hub default.
