@@ -216,6 +216,10 @@ If you are running the course on the university JupyterHub, **Practicals 1–3 w
 
 **Then open Practical 4 as usual.** At the top-right of the notebook, click the kernel name and choose **"GIS Practical (py311)"** from the dropdown. You can now run every cell in the GIS notebook. You only need to build the kernel once — after that, just select it whenever you open Practical 4.
 
+> ℹ️ **One more JupyterHub quirk — the PROJ database.** Even with the dedicated kernel above, the Hub's *base* environment exports `PROJ_LIB`/`PROJ_DATA` variables that point at an older, system-wide PROJ database (`/opt/conda/share/proj`). Your kernel inherits them, so GeoPandas tries to read that stale database instead of its own and fails with an error like `proj.db ... DATABASE.LAYOUT.VERSION.MINOR = 2 whereas a number >= 6 is expected ... It comes from another PROJ installation`. **Practical 4 fixes this for you automatically** — the first few lines of its import cell redirect `PROJ_DATA`/`PROJ_LIB`/`GDAL_DATA` to the dedicated kernel's own data folders (via `sys.prefix`), so just run the cells in order. If you ever want the fix applied to *every* notebook on this kernel, add an `env` block to the kernel's `kernel.json` (at `~/.local/share/jupyter/kernels/gis-practical/kernel.json`) pointing those three variables at `/opt/conda/envs/gis-practical/share/{proj,proj,gdal}`.
+
+> 🧩 **If selecting the kernel fails with `No such file or directory: '/opt/conda/envs/.../bin/python'`,** the kernel was registered but its matching conda environment no longer exists (a leftover registration). `jupyter kernelspec list` shows registrations, not whether their Python still exists. Remove the orphan with `jupyter kernelspec uninstall -y <name>` and rebuild from step 2, making sure the `conda create -n <name>` and `ipykernel install --name <name>` use the **same** name.
+
 
 ## 4) Repository structure and using Jupyter notebooks <a name="Folder-Structure"></a>
 
